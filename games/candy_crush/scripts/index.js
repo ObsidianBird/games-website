@@ -15,6 +15,7 @@ window.onload = function () {
     window.setInterval(function(){ //time interval
         crushCandy();
         slideCandy();
+        generateCandy();
     },100);
 }
 
@@ -191,5 +192,13 @@ function slideCandy (){
         for (let r = index; r >=0; r--){
             board [r][c].src = "./images/blank.png"; //set the images to blank where were candies
         }
+    }
+}
+
+function generateCandy(){ //only the first row needed
+    for(let c = 0; c < columns;  c++) {
+        if (board[0][c].src.includes("blank")){ //first row
+            board[0][c].src = "./images/" + randomCandy() +".png";
+        } 
     }
 }
