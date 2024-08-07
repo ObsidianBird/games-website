@@ -12,8 +12,9 @@ var otherTile;
 
 window.onload = function () {
     startGame();
-    window.setInterval(function(){ //time intervallum
+    window.setInterval(function(){ //time interval
         crushCandy();
+        slideCandy();
     },100);
 }
 
@@ -174,4 +175,21 @@ for (let c = 0; c < columns; c++) {
 }
 
 return false; //if didn't find any combination
+}
+
+//slide the candies down
+
+function slideCandy (){
+    for (let c = 0; c < columns; c++){
+        let index = rows - 1;
+        for(let r = columns-1; r >= 0; r--){
+            if (!board[r][c].src.includes("blank")){ //if it's a candy (not blank)
+                board[index][c].src =board[r][c].src; //set the image of the candy from up
+                index -= 1; //move the candy up by 1
+            }
+        }
+        for (let r = index; r >=0; r--){
+            board [r][c].src = "./images/blank.png"; //set the images to blank where were candies
+        }
+    }
 }
