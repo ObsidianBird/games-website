@@ -71,6 +71,10 @@ function dragDrop(){
 }
 
 function dragEnd(){  //do the dropping
+
+    if (currTile.src.includes("blank") || otherTile.src.includes("blank")){ /*if one of them was a blank tile*/ 
+        return;
+    }
     //only let swap candies next to each other
     let currCoords = currTile.id.split("-"); //id="0-0" --> ["0" , "0"]
     let r = parseInt(currCoords[0]);
@@ -94,7 +98,16 @@ function dragEnd(){  //do the dropping
         let currImg = currTile.src;
         let  otherImg = otherTile.src;
         currTile.src = otherImg;
-        otherTile.src = currImg;}
+        otherTile.src = currImg;
+
+        let validMove = checkValid();
+        if (!validMove){
+            let currImg = currTile.src;
+            let  otherImg = otherTile.src;
+            currTile.src = otherImg;
+            otherTile.src = currImg;
+        }
+    }
 }
 
 function crushCandy (){
@@ -135,4 +148,30 @@ for (let c = 0; c < columns; c++) {
 }
 }
 
-//28:10 continue this: https://www.youtube.com/watch?v=8yIKZQMGi0A
+function checkValid() {
+       //check rows
+   for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < columns-2; c++) {
+        let candy1 = board[r][c];
+        let candy2 = board[r][c+1];
+        let candy3 = board[r][c+2];
+        if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
+            return true;
+        }
+    }
+}
+
+//check columns
+for (let c = 0; c < columns; c++) {
+    for (let r = 0; r < rows-2; r++) {
+        let candy1 = board[r][c];
+        let candy2 = board[r+1][c];
+        let candy3 = board[r+2][c];
+        if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
+            return true;
+        }
+    }
+}
+
+return false; //if didn't find any combination
+}
